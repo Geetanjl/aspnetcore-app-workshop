@@ -21,18 +21,18 @@ stages:
       displayName: Dotnet Restore
       inputs:
         command: 'restore'
-        projects: 'ConferencePlanner.sln'
+        projects: '**/*.sln'
         feedsToUse: 'select'
     - task: DotNetCoreCLI@2
       displayName: Dotnet Build
       inputs:
         command: 'build'
-        projects: 'ConferencePlanner.sln'
+        projects: '**/*.sln'
     - task: DotNetCoreCLI@2
       displayName: Dotnet Test
       inputs:
         command: 'test'
-        projects: 'ConferencePlanner.sln'
+        projects: '**/*.sln'
 
   - job: Build_Frontend
     pool:
