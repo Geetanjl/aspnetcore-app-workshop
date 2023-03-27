@@ -11,6 +11,16 @@ stages:
   - job: Build_Backend
     pool:
       vmImage: windows-latest
+    strategy:
+      matrix:
+        Python37:
+          python.version: '3.7'
+        Python38:
+          python.version: '3.8'
+        Python39:
+          python.version: '3.9'
+        Python310:
+          python.version: '3.10'
     steps:
     - task: UseDotNet@2
       displayName: Dotnet Install
@@ -23,6 +33,18 @@ stages:
         command: 'restore'
         projects: '**/*.sln'
         feedsToUse: 'select'
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+      displayName: 'Use Python $(python.version)'
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      displayName: 'Install dependencies'
+    - script: |
+        pip install pytest pytest-azurepipelines
+        pytest
+      displayName: 'pytest'
     - task: DotNetCoreCLI@2
       displayName: Dotnet Build
       inputs:
@@ -47,10 +69,10 @@ stages:
       displayName: Install Npm
       inputs:
         command: 'install'
-        workingDir: 'aspnetcore-app-workshop/save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp'
+        workingDir: 'ClientApp'
     - task: Npm@1
       displayName: Npm run and build
       inputs:
         command: 'custom'
-        workingDir: 'aspnetcore-app-workshop/save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp'
+        workingDir: 'ClientApp'
         customCommand: 'run build'
