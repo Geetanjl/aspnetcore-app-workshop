@@ -1,0 +1,56 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+stages:
+- stage: Build
+  jobs:
+  - job: Build_Backend
+    pool:
+      vmImage: windows-latest
+    steps:
+    - task: UseDotNet@2
+      displayName: Dotnet Install
+      inputs:
+        packageType: 'sdk'
+        version: '6.x'
+    - task: DotNetCoreCLI@2
+      displayName: Dotnet Restore
+      inputs:
+        command: 'restore'
+        projects: 'ConferencePlanner.sln'
+        feedsToUse: 'select'
+    - task: DotNetCoreCLI@2
+      displayName: Dotnet Build
+      inputs:
+        command: 'build'
+        projects: 'ConferencePlanner.sln'
+    - task: DotNetCoreCLI@2
+      displayName: Dotnet Test
+      inputs:
+        command: 'test'
+        projects: 'ConferencePlanner.sln'
+
+  - job: Build_Frontend
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: NodeTool@0
+      displayName: Node js Install
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '14.x'
+    - task: Npm@1
+      displayName: Install Npm
+      inputs:
+        command: 'install'
+        workingDir: 'aspnetcore-app-workshop/save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp'
+    - task: Npm@1
+      displayName: Npm run and build
+      inputs:
+        command: 'custom'
+        workingDir: 'aspnetcore-app-workshop/save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp'
+        customCommand: 'run build'
