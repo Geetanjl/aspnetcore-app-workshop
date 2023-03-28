@@ -11,72 +11,45 @@ stages:
   - job: Build_Backend
     pool:
       vmImage: windows-latest
-#    strategy:
-#      matrix:
-#        Python37:
-#          python.version: '3.7'
-#        Python38:
-#          python.version: '3.8'
-#        Python39:
-#          python.version: '3.9'
-#        Python310:
-#          python.version: '3.10'
+
     steps:
     - task: UseDotNet@2
       displayName: Dotnet Install
       inputs:
         packageType: 'sdk'
         version: '6.x'
-    - task: DotNetCoreCLI@2
-      displayName: Dotnet Restore
+    - task: MSBuild@1
       inputs:
-        command: 'restore'
-        projects: '**/*.csproj'
-        feedsToUse: 'select'
-#    - task: UsePythonVersion@0
-#      inputs:
-#        versionSpec: '$(python.version)'
-#     displayName: 'Use Python $(python.version)'
-#    - script: |
-#        python -m pip install --upgrade pip
-#        pip install -r 
-#      displayName: 'Install dependencies'
-#    - script: |
-#        pip install pytest pytest-azurepipelines
-#        pytest
-#      displayName: 'pytest'
-    - task: Npm@1
+        solution: 'ConferencePlanner\FrontEnd\FrontEnd.csproj'
+        platform: 'Any CPU'
+        configuration: 'Release'
+    - task: MSBuild@1
       inputs:
-        command: 'install'
-        workingDir: 'save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp/package.json'
-    - task: DotNetCoreCLI@2
-      displayName: Dotnet Build
+        solution: 'ConferencePlanner\BackEnd\BackEnd.csproj'
+        platform: 'Any CPU'
+        configuration: 'Release'
+    - task: MSBuild@1
       inputs:
-        command: 'build'
-        projects: '**/*.csproj'
-    - task: DotNetCoreCLI@2
-      displayName: Dotnet Test
-      inputs:
-        command: 'test'
-        projects: '**/*.csproj'
+        solution: 'ConferencePlanner\ConferenceDTO\ConferenceDTO.csproj'
+        platform: 'Any CPU'
+        configuration: 'Release'
 
-  - job: Build_Frontend
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: NodeTool@0
-      displayName: Node js Install
-      inputs:
-        versionSource: 'spec'
-        versionSpec: '14.x'
-    - task: Npm@1
-      displayName: Install Npm
-      inputs:
-        command: 'install'
-        workingDir: 'save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp/package.json'
-    - task: Npm@1
-      displayName: Npm run and build
-      inputs:
-        command: 'custom'
-        workingDir: 'save-points\8a-Adding-FrontEnd-Spa-final\ConferencePlanner\src\FrontEndSpa\ClientApp'
-        customCommand: 'run build'
+#  - job: Build_Frontend
+#    pool:
+#    steps:
+#    - task: NodeTool@0
+#      displayName: Node js Install
+#      inputs:
+#        versionSource: 'spec'
+#        versionSpec: '14.x'
+#    - task: Npm@1
+#      displayName: Install Npm
+#      inputs:
+#        command: 'install'
+#        workingDir: ''
+#   - task: Npm@1
+#      displayName: Npm run and build
+#      inputs:
+#        command: 'custom'
+#        workingDir: ''
+#        customCommand: 'run build'
