@@ -45,6 +45,10 @@ stages:
 #        pip install pytest pytest-azurepipelines
 #        pytest
 #      displayName: 'pytest'
+    - task: Npm@1
+      inputs:
+        command: 'install'
+        workingDir: 'save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp/package.json'
     - task: DotNetCoreCLI@2
       displayName: Dotnet Build
       inputs:
