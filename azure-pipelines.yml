@@ -14,42 +14,22 @@ stages:
 
     steps:
     - task: UseDotNet@2
-      displayName: Dotnet Install
+      displayName: Install Sdk
       inputs:
         packageType: 'sdk'
         version: '6.x'
-    - task: MSBuild@1
+    - task: DotNetCoreCLI@2
+      displayName: Frontend build
       inputs:
-        solution: 'ConferencePlanner\FrontEnd\FrontEnd.csproj'
-        platform: 'Any CPU'
-        configuration: 'Release'
-    - task: MSBuild@1
+        command: 'build'
+        projects: 'src/ConferencePlanner/FrontEnd/FrontEnd.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: Bakend Build
       inputs:
-        solution: 'ConferencePlanner\BackEnd\BackEnd.csproj'
-        platform: 'Any CPU'
-        configuration: 'Release'
-    - task: MSBuild@1
+        command: 'build'
+        projects: 'src/ConferencePlanner/BackEnd/BackEnd.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: ConferenceDTO build
       inputs:
-        solution: 'ConferencePlanner\ConferenceDTO\ConferenceDTO.csproj'
-        platform: 'Any CPU'
-        configuration: 'Release'
-
-#  - job: Build_Frontend
-#    pool:
-#    steps:
-#    - task: NodeTool@0
-#      displayName: Node js Install
-#      inputs:
-#        versionSource: 'spec'
-#        versionSpec: '14.x'
-#    - task: Npm@1
-#      displayName: Install Npm
-#      inputs:
-#        command: 'install'
-#        workingDir: ''
-#   - task: Npm@1
-#      displayName: Npm run and build
-#      inputs:
-#        command: 'custom'
-#        workingDir: ''
-#        customCommand: 'run build'
+        command: 'build'
+        projects: 'src/ConferencePlanner/ConferenceDTO/ConferenceDTO.csproj'
