@@ -11,7 +11,6 @@ stages:
   - job: Build_Backend
     pool:
       vmImage: windows-latest
-
     steps:
     - task: UseDotNet@2
       displayName: Install Sdk
@@ -70,3 +69,23 @@ stages:
         downloadType: 'single'
         artifactName: 'backend'
         downloadPath: '$(System.ArtifactsDirectory)'
+  - job: Build_FrontendSpa
+    pool:
+      vmImage: windows-latest
+    steps:
+    - task: NodeTool@0
+      displayName: Install Node.js
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '14.x'
+    - task: Npm@1
+      displayName: Install Npm
+      inputs:
+        command: 'install'
+        workingDir: 'src/FrontEndSpa/ClientApp'
+    - task: Npm@1
+      displayName: Npm run and build
+      inputs:
+        command: 'custom'
+        workingDir: 'src/FrontEndSpa/ClientApp'
+        customCommand: 'run build --prod'
