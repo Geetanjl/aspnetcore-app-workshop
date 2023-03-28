@@ -89,3 +89,15 @@ stages:
         command: 'custom'
         workingDir: 'save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp'
         customCommand: 'run build --prod'
+    - task: PublishBuildArtifacts@1
+      displayName: Publish FrontendSpa Artifact
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)/dist'
+        ArtifactName: 'FrontendSpa'
+        publishLocation: 'Container'
+    - task: DownloadPipelineArtifact@2
+      displayName: Download Frontend Artifact
+      inputs:
+        buildType: 'current'
+        artifactName: 'FrontendSpa'
+        targetPath: '$(Pipeline.Workspace)'
