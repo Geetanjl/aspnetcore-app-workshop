@@ -71,7 +71,7 @@ stages:
         downloadPath: '$(System.ArtifactsDirectory)'
   - job: Build_FrontendSpa
     pool:
-      vmImage: windows-latest
+      vmImage: ubuntu-latest
     steps:
     - task: NodeTool@0
       displayName: Install Node.js
@@ -82,10 +82,10 @@ stages:
       displayName: Install Npm
       inputs:
         command: 'install'
-        workingDir: 'src/FrontEndSpa/ClientApp'
+        workingDir: 'save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp'
     - task: Npm@1
       displayName: Npm run and build
       inputs:
         command: 'custom'
-        workingDir: 'src/FrontEndSpa/ClientApp'
+        workingDir: 'save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp'
         customCommand: 'run build --prod'
