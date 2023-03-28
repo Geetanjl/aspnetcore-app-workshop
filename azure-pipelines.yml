@@ -73,7 +73,7 @@ stages:
       displayName: Install Npm
       inputs:
         command: 'install'
-        workingDir: 'save-points\8a-Adding-FrontEnd-Spa-final\ConferencePlanner\src\FrontEndSpa\ClientApp'
+        workingDir: 'save-points/8a-Adding-FrontEnd-Spa-final/ConferencePlanner/src/FrontEndSpa/ClientApp/package.json'
     - task: Npm@1
       displayName: Npm run and build
       inputs:
