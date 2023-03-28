@@ -33,3 +33,25 @@ stages:
       inputs:
         command: 'build'
         projects: 'src/ConferencePlanner/ConferenceDTO/ConferenceDTO.csproj'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\src\ConferencePlanner\FrontEnd\bin\Debug\net6.0'
+        ArtifactName: 'Frontend'
+        publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\src\ConferencePlanner\BackEnd\bin\Debug\net6.0'
+        ArtifactName: 'Backend'
+        publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)\src\ConferencePlanner\ConferenceDTO\bin\Debug\net6.0'
+        ArtifactName: 'ConferenceDTO'
+        publishLocation: 'Container'
+    - task: DownloadBuildArtifacts@1
+      displayName: download backend artifact
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'backend'
+        downloadPath: '$(System.ArtifactsDirectory)'
